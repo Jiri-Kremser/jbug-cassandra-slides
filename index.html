@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+		<title>Apache Cassandra and JON - NoSQL in Real Life</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+		<meta name="description" content="Apache Cassandra and JON: NoSQL in Real Life">
+		<meta name="author" content="Jiri Kremser">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -42,32 +42,26 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>HTML Presentations Made Easy</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
-				</section>
+        <section>
+          <h2>Apache Cassandra and JON</h2>
+          <h3>NoSQL in Real Life</h3>
+          <p>
+            Created by <a href="https://github.com/Jiri-Kremser">Jiří Kremser</a> &lt; jkremser@redhat.com &gt;
+          </p>
+          <p>&#35;rhq on Freenode</p>
+        </section>
 
-				<section>
-					<h2>Heads Up</h2>
-					<p>
-						reveal.js is a framework for easily creating beautiful presentations using HTML. You'll need a browser with
-						support for CSS 3D transforms to see it in its full glory.
-					</p>
-
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
-
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
+        <section  data-autoslide="10000">
+          <h2>Big Data?</h2>
+          <img width="300" height="300" src="./pic/big-data.jpg" alt="Say big data">
+          <aside class="notes">
+            Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+          </aside>
+        </section>
+        <section>
 						<h2>Vertical Slides</h2>
 						<p>
-							Slides can be nested inside of other slides,
+							Sllllides can be nested inside of other slides,
 							try pressing <a href="#" class="navigate-down">down</a>.
 						</p>
 						<a href="#" class="image navigate-down">
@@ -365,6 +359,19 @@ function linkify( selector ) {
 			// Full list of configuration options available here:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 960,
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.2,
+        maxScale: 1.0,
 				controls: true,
 				progress: true,
 				history: true,
@@ -389,6 +396,6 @@ function linkify( selector ) {
 			});
 
 		</script>
-
+    <script src="//localhost:35729/livereload.js"></script>
 	</body>
 </html>

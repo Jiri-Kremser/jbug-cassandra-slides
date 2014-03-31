@@ -96,10 +96,19 @@ module.exports = function(grunt) {
 			]
 		},
 
+    open: {
+      dev: {
+        path: 'http://localhost:' + port,
+      },
+    },
+
 		watch: {
 			main: {
-				files: [ 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
-				tasks: 'default'
+				files: [ 'index.html', 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
+				tasks: ['default'/*, 'open'*/],
+        options: {
+          livereload: true,
+        },
 			},
 			theme: {
 				files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
@@ -117,6 +126,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-contrib-sass' );
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
+  grunt.loadNpmTasks( 'grunt-open' );
 	grunt.loadNpmTasks( 'grunt-zip' );
 
 	// Default task
@@ -129,7 +139,7 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'package', [ 'default', 'zip' ] );
 
 	// Serve presentation locally
-	grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+	grunt.registerTask( 'serve', [ 'connect', 'open', 'watch' ] );
 
 	// Run tests
 	grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
