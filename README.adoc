@@ -1,0 +1,35 @@
+jbug-cassandra-slides
+=====================
+Jiri Kremser <jkremser@redhat.com>
+v1.0, 2014-04-01
+
+Slides created using the link:https://github.com/hakimel/reveal.js/[reveal.js] Presentation Framework.
+
+
+== Installation
+--
+. Install link:http://nodejs.org/[NodeJS]
+. Install link:http://gruntjs.com/getting-started#installing-the-cli[Grunt]
+. Clone the repo
+
+ $ git clone https://github.com/Jiri-Kremser/jbug-cassandra-slides
+
+. Install the NodeJS dependencies (inside the root of the project)
+
+ $ npm install
+
+. Build the slides
+
+ $ grunt
+
+--
+
+== Serving the Presentation
+ $ grunt serve
+
+
+Note:
+____________________________________________________________________
+ If you change the `index.html` and save the file, 
+ grunt watcher will take the change and refresh the browser for you.
+____________________________________________________________________
