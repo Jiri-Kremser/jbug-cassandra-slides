@@ -52,32 +52,37 @@
         </section>
 
         <section  data-autoslide="10000">
-          <h2>Big Data?</h2>
-          <img width="300" height="300" src="./pic/big-data.jpg" alt="Say big data">
+         <!-- <h2>Big Data?</h2> -->
+          <img width="300" height="300" src="./pic/big-data.jpg" alt="Say big data"/>
           <aside class="notes">
             Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
           </aside>
         </section>
-        <section>
-						<h2>Vertical Slides</h2>
-						<p>
-							Sllllides can be nested inside of other slides,
-							try pressing <a href="#" class="navigate-down">down</a>.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
+        <section data-background="#308070">
+          <section>
+						<h2>Overview of JON</h2>
+            <ul>
+              <li>Framework for
+                <ul>
+                  <li>Monitoring</li>
+                  <li>Alerting</li>
+                  <li>Management of servers and applications</li>
+                </ul>
+              </li>
+              <li>Central Server(s)</li>
+              <li>Agents on managed machines</li>
+              <li>Plugins do the actual work</li>
+            </ul>
 					</section>
 					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
+						<h2>Architecture</h2>
+            <img width="600" height="300" src="./pic/rhq-architecture.png" alt="rhq architecture"/>
 					</section>
 					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
+						<h2>Web UI</h2>
+						<!--<a class="test" href="http://10.16.23.192:7080/coregui/#Resource/10063" target="_blank">-->
+							<img width="900" height="500" src="./pic/webUI.png" alt="rhq web ui"/>
+						<!--</a>-->
 					</section>
 					<section>
 						<h2>Basement Level 3</h2>
@@ -89,10 +94,21 @@
 				</section>
 
 				<section>
-					<h2>Slides</h2>
-					<p>
-						Not a coder? No problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slid.es" target="_blank">http://slid.es</a>.
-					</p>
+					<h2>Cassandra</h2>
+          <pre><code data-trim contenteditable>
+CREATE TABLE person (
+  id uuid PRIMARY_KEY,
+  name text,
+  homepage text
+);
+
+CREATE TABLE person_email (
+  user_id uuid REFERENCES person,
+  email text
+);
+
+SELECT * FROM person NATURAL JOIN person_email;
+          </code></pre>
 				</section>
 
 				<section>
