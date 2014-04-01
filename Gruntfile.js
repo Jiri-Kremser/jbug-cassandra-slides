@@ -140,6 +140,7 @@ module.exports = function(grunt) {
 
 	// Serve presentation locally
 	grunt.registerTask( 'serve', [ 'connect', 'open', 'watch' ] );
+  grunt.registerTask( 'server', [ 'serve' ] );
 
 	// Run tests
 	grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
