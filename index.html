@@ -209,13 +209,6 @@ tr.close();</code></pre>
         </section>
         <section>
           <h3>Reads</h3>
-            <ol style="font-size: 27px;">
-              <li>Logging data in the commit log</li>
-              <li>Writing data to the memtable</li>
-              <li>Flushing data from the memtable - sort, sequential I/O, purge records in c. l.</li>
-              <li>Storing data on disk in SSTables</li>
-              <li>Compaction - merge sort, data consolidation, removing records with tombstones, etc.</li>
-            </ol>
             <img width="758" height="378" src="./pic/read-process.png" alt"C* Reads"/>
             <div class="source">[source: DataStax documentation]</div>
         </section>
