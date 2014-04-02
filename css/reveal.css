@@ -1878,3 +1878,18 @@ body {
 }
 
 
+/*********************************************
+ *  CUSTOM
+ *********************************************/
+.reveal .source {
+  font-size: 7px;
+  margin-top: -33px;
+}
+
+.reveal .hotkey {
+  color: #ccc7b5;
+  padding-left: 12px;
+  padding-right: 12px;
+  background: #494949;
+  border-radius: 10px;  
+}

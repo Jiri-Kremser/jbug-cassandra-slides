@@ -57,10 +57,10 @@
         <section>
           <h2>Outline</h2>
           <ul>
-            <li>a</li>
-            <li>b</li>
-            <li>c</li>
-            <li>d</li>
+            <li>Overview of JON</li>
+            <li>Cassandra Essentials</li>
+            <li>JON + Cassandra = ♥</li>
+            <li>Demo</li>
           </ul>
         </section>
         <section  data-autoslide="10000">
@@ -106,6 +106,9 @@
             </ul>
 					</section>
 				</section>
+
+
+
       <section data-transition="linear" data-background="#8c4738" data-background-transition="slide">
         <section>
           <h2>♥ Cassandra ♥</h2>
@@ -154,6 +157,7 @@ WHERE id = 550e8400-e29b-41d4-a716-44665544a000;
               <li>one row key identifies sorted set of columns<br/> (conceptually: "Map&lt;rowKey, SortedSet&lt;column&gt;&gt;")</li>
               <li>column family ~ table</li>
               <li>row key ~ partition key</li>
+              <li>denormalization => Cassandra tables are not related.</li>
             </ul>
             <img width="633" height="352" src="./pic/simple-columnfamily.png" alt"Column family example"/>
           </section>
@@ -183,6 +187,39 @@ for (ColumnOrSuperColumn result : results) {
 tr.close();</code></pre>
           </section>
         <section>
+          <h3>Writes</h3>
+            <ol style="font-size: 27px;">
+              <li>Logging data in the commit log</li>
+              <li>Writing data to the memtable</li>
+              <li>Flushing data from the memtable - sort, sequential I/O, purge records in c. l.</li>
+              <li>Storing data on disk in SSTables</li>
+              <li>Compaction - merge sort, data consolidation, removing records with tombstones, etc.</li>
+            </ol>
+            <img width="583" height="254" src="./pic/write-process.png" alt"C* Writes"/>
+            <div class="source">[source: DataStax documentation]</div>
+        </section>
+        <section>
+          <h2>Writes Compared</h2>
+            <ul>
+              <li>Postgres, MariaDB, Oracle, MongoDB, Membase, BerkeleyDB, etc use in-place modifications</li>
+              <li>..but flushes are _random_ writes</li>
+              <li>C* just appends all the operations to the commit log and memtables</li>
+              <li>the flush can be done in O(n)</li>
+            </ul>
+        </section>
+        <section>
+          <h3>Reads</h3>
+            <ol style="font-size: 27px;">
+              <li>Logging data in the commit log</li>
+              <li>Writing data to the memtable</li>
+              <li>Flushing data from the memtable - sort, sequential I/O, purge records in c. l.</li>
+              <li>Storing data on disk in SSTables</li>
+              <li>Compaction - merge sort, data consolidation, removing records with tombstones, etc.</li>
+            </ol>
+            <img width="758" height="378" src="./pic/read-process.png" alt"C* Reads"/>
+            <div class="source">[source: DataStax documentation]</div>
+        </section>
+        <section>
           <h2>CAP Theorem</h2>
           <p>aka <a href="http://www.cs.berkeley.edu/~brewer/cs262b-2004/PODC-keynote.pdf" target="_blank">Brewer's "theorem"</a></p>
           <p>pick two:</p>
@@ -193,272 +230,84 @@ tr.close();</code></pre>
             <ul>
               <li>eventualy consistent by default</li>
               <li>Read and Write Consistency</li>
-              <li>Linearizable consistency since 2.0 and Paxos (lightweight transactions)</li>
+              <li>Linearizable consistency, since 2.0 and Paxos protocol (lightweight transactions)</li>
               <li>last write wins X vector clocks X Paxos (Leslie Lamport)</li>
             </ul>
         </section>
+        <section>
+          <h2>Consistency Levels</h2>
+            <ul>
+              <li>can differ for writes and reads</li>
+              <li>should depend on your Replication Factor</li>
+              <li><code>ONE, TWO, THREE</code></li>
+              <li><code>ALL</code></li>
+              <li><code>{LOCAL_|EACH_}QUORUM</code></li>
+              <li><code>SERIAL</code> - Lightweight transactions</li>
+            </ul>
+        </section>
+        <section>
+          <h2>Cluster Architecture</h2>
+            <ul>
+              <li>Token Ring, md5 hashes of partition keys</li>
+              <li>Consistent Hashing</li>
+              <li>Virtual nodes, since C* 1.2</li>
+              <li>Support for datacenters - Snitches</li>
+            </ul>
+            <img width="320" height="229" src="./pic/token-ring.png" alt"C* Token Ring"/>
+        </section>
       </section>
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
 
-				<section>
-					<h2>Works in Mobile Safari</h2>
-					<p>
-						Try it out! You can swipe through the slides and pinch your way to the overview.
-					</p>
-				</section>
 
-				<section>
-					<h2>Marvelous Unordered List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
 
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
+      <section data-transition="linear" data-background="#206f95" data-background-transition="slide">
+        <section>
+          <h2>JON + Cassandra</h2>
+            <ul>
+              <li>C* is a perfect fit for time series data</li>
+              <li>TTL feature - continuous forgetting</li>
+              <li>write throughput is enormous (300k metrics per minute with 2 nodes = 600k writes/minute)</li>
+              <li>we call it RHQ Storage Node</li>
+            </ul><br/><br/>
+            <pre class="fragment"><code data-trim contenteditable>
+            INSERT INTO x(..) VALUES (..) USING TTL 300;
+            </code></pre>
+        </section>
+        <section>
+          <h2>JON + Storage Node</h2>
+            <ul>
+              <li>Foreman infrastructure [<a href="https://foreman.jonqe.lab.eng.bos.redhat.com/hosts?utf8=%E2%9C%93&search=jk" target="_blank">link</a>]</li>
+              <li>Disk space benchmark [<a href="https://docs.google.com/spreadsheet/ccc?key=0AnqwvYPBcmwfdDhYby1ia0NuMExYaUE1aWhRN1lnM2c&usp=sharing#gid=4" target="_blank">link</a>]</li>
+              <li>Monitoring the status of the cluster</li>
+              <li>Alerting when disk space goes low / operation failure</li>
+              <li>At least 1 Storage Node has to be installed</li>
+              <li><span class="hotkey">rhqctl install</span> installs server, agent and storage node</li>
+            </ul>
+        </section>
+        <section>
+          <h2>Admin UI</h2>
+          <img width="900" height="500" src="./pic/storage-ui.png" alt="Storage Node UI"/>
+        </section>
+      </section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
+      <section data-background-color="rgba(50,200,90,0.4)">
+        <h1>Demo</h1>
+        <small>Talk is cheap ;)</small>
+      </section>
 
-						For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-
-						```
-						<section data-markdown>
-						  ## Markdown support
-
-						  For those of you who like that sort of thing.
-						  Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
-
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=cube#/transitions">Cube</a> -
-						<a href="?transition=page#/transitions">Page</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a> -
-						<a href="?transition=linear#/transitions">Linear</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?#/transitions">Default</a>
-					</p>
-				</section>
-
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						Reveal.js comes with a few themes built in: <br>
-						<a href="?#/themes">Default</a> -
-						<a href="?theme=sky#/themes">Sky</a> -
-						<a href="?theme=beige#/themes">Beige</a> -
-						<a href="?theme=simple#/themes">Simple</a> -
-						<a href="?theme=serif#/themes">Serif</a> -
-						<a href="?theme=night#/themes">Night</a> <br>
-						<a href="?theme=moon#/themes">Moon</a> -
-						<a href="?theme=solarized#/themes">Solarized</a>
-					</p>
-					<p>
-						<small>
-							* Theme demos are loaded after the presentation which leads to flicker. In production you should load your theme in the <code>&lt;head&gt;</code> using a <code>&lt;link&gt;</code>.
-						</small>
-					</p>
-				</section>
-
-				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the background.
-					</p>
-				</section>
-
-				<section data-state="customevent">
-					<h2>Custom Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code data-trim contenteditable style="font-size: 18px; margin-top: 20px;">
-Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
-
-				<section>
-					<section data-background="#007777">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#007777"</code> on a slide to change the full page background to the given color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Repeated Image Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-				</section>
-
-				<section data-transition="linear" data-background="#4d7e65" data-background-transition="slide">
-					<h2>Background Transitions</h2>
-					<p>
-						Pass reveal.js the <code>backgroundTransition: 'slide'</code> config argument to make backgrounds slide rather than fade.
-					</p>
-				</section>
-
-				<section data-transition="linear" data-background="#8c4738" data-background-transition="slide">
-					<h2>Background Transition Override</h2>
-					<p>
-						You can override background transitions per slide by using <code>data-background-transition="slide"</code>.
-					</p>
-				</section>
-
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
-				</section>
-
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
-
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
-
-				<section>
-					<section id="fragments">
-						<h2>Fragmented Views</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<ol>
-							<li class="fragment"><code>any type</code></li>
-							<li class="fragment"><em>of view</em></li>
-							<li class="fragment"><strong>fragments</strong></li>
-						</ol>
-
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's a few styles of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-green">highlight-green</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-current-blue">highlight-current-blue</p>
-					</section>
-				</section>
-
-				<section>
-					<h2>Spectacular image!</h2>
-					<a class="image" href="http://lab.hakim.se/meny/" target="_blank">
-						<img width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny">
-					</a>
-				</section>
-
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>
-					<iframe id="slideshare" src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
-					<script>
-						document.getElementById('slideshare').attributeName = 'allowfullscreen';
-					</script>
-				</section>
-
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press b or period on your keyboard to enter the 'paused' mode. This mode is helpful when you want to take distracting slides off the screen
-						during a presentation.
-					</p>
-				</section>
-
-				<section>
-					<h2>Stellar Links</h2>
-					<ul>
-						<li><a href="http://slid.es">Try the online editor</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js">Source code on GitHub</a></li>
-						<li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
-					</ul>
-				</section>
-
-				<section>
-					<h1>Thats all folks</h1>
-					
-				</section>
+		  <section data-background-color="rgba(50,200,90,0.4)">
+				<h2>Thats all folks</h2><br/><br/>
+        <p>This presentation</p>
+			  <img width="220" height="220" src="./pic/qr.png" alt="QR code with link to slides"/>
+        <p><a href="http://goo.gl/zs82jh" target="_blank">http://goo.gl/zs82jh</a></p>
+			</section>
 
 			</div>
-
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
 
 		<script>
-
 			// Full list of configuration options available here:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
