@@ -44,14 +44,25 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
         <section>
-          <h2>Apache Cassandra and JON</h2>
-          <h3>NoSQL in Real Life</h3>
+          <h1>Apache Cassandra and JON</h1>
+          <h2>NoSQL in Real Life</h2>
+          <br/>
           <p>
-            Created by <a href="https://github.com/Jiri-Kremser">Jiří Kremser</a> &lt; jkremser@redhat.com &gt;
+            <a href="https://github.com/Jiri-Kremser">Jiří Kremser</a> &lt; jkremser@redhat.com &gt;
           </p>
           <p>&#35;rhq on Freenode</p>
+          <br/><br/><br/><br/>
+          2014-04-02
         </section>
-
+        <section>
+          <h2>Outline</h2>
+          <ul>
+            <li>a</li>
+            <li>b</li>
+            <li>c</li>
+            <li>d</li>
+          </ul>
+        </section>
         <section  data-autoslide="10000">
          <!-- <h2>Big Data?</h2> -->
           <img width="300" height="300" src="./pic/big-data.jpg" alt="Say big data"/>
@@ -173,9 +184,18 @@ tr.close();</code></pre>
           </section>
         <section>
           <h2>CAP Theorem</h2>
-          <p>aka Brewer's "theorem"</p>
+          <p>aka <a href="http://www.cs.berkeley.edu/~brewer/cs262b-2004/PODC-keynote.pdf" target="_blank">Brewer's "theorem"</a></p>
           <p>pick two:</p>
           <img width="604" height="349" src="./pic/cap.png" alt"CAP Theorem"/>
+        </section>
+        <section>
+          <h2>Tunable Consistency</h2>
+            <ul>
+              <li>eventualy consistent by default</li>
+              <li>Read and Write Consistency</li>
+              <li>Linearizable consistency since 2.0 and Paxos (lightweight transactions)</li>
+              <li>last write wins X vector clocks X Paxos (Leslie Lamport)</li>
+            </ul>
         </section>
       </section>
 				<section>
@@ -426,8 +446,8 @@ function linkify( selector ) {
 				</section>
 
 				<section>
-					<h1>THE END</h1>
-					<h3>BY Hakim El Hattab / hakim.se</h3>
+					<h1>Thats all folks</h1>
+					
 				</section>
 
 			</div>
